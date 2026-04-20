@@ -4,6 +4,12 @@ import { createRequire } from 'node:module';
 import type { AstroIntegration } from 'astro';
 import markoVite from '@marko/vite';
 
+// Vite 6+ Environment API — not yet in Rollup's PluginContext types.
+type EnvironmentPluginContext = { environment?: { name: string } };
+
+// Rollup transform hook options — ssr flag used by @marko/vite to detect SSR mode.
+type TransformOptions = { ssr?: boolean };
+
 const STYLE_PREFIX = 'astro-marko-style:';
 const VIRTUAL_CSS_RE = /["']([^"']*\?marko-virtual[^"']*\.css)["']/g;
 
@@ -149,17 +155,17 @@ function guardedMarkoVite(options: { linked: boolean }) {
     const original = plugin.transform;
     return {
       ...plugin,
-      transform(code: string, id: string, opts?: unknown) {
+      transform(code: string, id: string, opts?: TransformOptions) {
         if (id.startsWith('\x00')) return null;
         // @marko/vite 5.x detects SSR mode via opts.ssr. In Vite 7's Environment
         // API (used by Astro 6), the prerender environment no longer sets opts.ssr
         // — SSR context is conveyed via this.environment.name instead. Shim it so
         // @marko/vite compiles in html (SSR) mode rather than dom (browser) mode.
-        const envName = (this as any).environment?.name;
-        const effectiveOpts =
-          envName !== undefined && envName !== 'client' && !(opts as any)?.ssr
-            ? { ...(opts as any ?? {}), ssr: true }
-            : opts;
+        const envName = (this as unknown as EnvironmentPluginContext).environment?.name;
+        const effectiveOpts: TransformOptions =
+          envName !== undefined && envName !== 'client' && !opts?.ssr
+            ? { ...opts, ssr: true }
+            : (opts ?? {});
         return original.call(this, code, id, effectiveOpts);
       },
     };

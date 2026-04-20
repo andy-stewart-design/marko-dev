@@ -1,7 +1,13 @@
 type MarkoTemplate = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mount(input: Record<string, unknown>, node: any, position?: string): void;
+  mount(input: Record<string, unknown>, node: Element, position?: string): void;
 };
+
+function isMarkoTemplate(Component: unknown): Component is MarkoTemplate {
+  return (
+    Component != null &&
+    typeof (Component as MarkoTemplate).mount === "function"
+  );
+}
 
 /**
  * Astro client entrypoint for Marko islands.
@@ -25,21 +31,26 @@ type MarkoTemplate = {
  *   <div innerHTML=input.content/>    (default slot)
  *   <div innerHTML=input.mySlot/>     (named slot)
  */
-export default (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  element: any,
-) =>
-  (Component: unknown, props: Record<string, unknown>, slots: Record<string, string> = {}): void => {
-    const template = Component as MarkoTemplate;
+export default (element: Element) =>
+  (
+    Component: unknown,
+    props: Record<string, unknown>,
+    slots: Record<string, string> = {},
+  ): void => {
+    if (!isMarkoTemplate(Component)) {
+      throw new Error(
+        "astro-marko: client hydrator received a non-Marko component",
+      );
+    }
 
     // Merge slot HTML strings into input under their Marko-conventional names.
     // default → content, named slots keep their name.
     const slotProps: Record<string, string> = {};
     for (const [name, html] of Object.entries(slots)) {
-      if (html) slotProps[name === 'default' ? 'content' : name] = html;
+      if (html) slotProps[name === "default" ? "content" : name] = html;
     }
 
     // Clear server-rendered content so mount() doesn't duplicate it
-    element.innerHTML = '';
-    template.mount({ ...props, ...slotProps }, element);
+    element.innerHTML = "";
+    Component.mount({ ...props, ...slotProps }, element);
   };
