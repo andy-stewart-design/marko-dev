@@ -1,0 +1,57 @@
+import { $counter } from "../../stores/counter.ts";
+
+<store/count=$counter/>
+
+<div class="card">
+  <p class="label">Increments</p>
+  <span class="count">${count}</span>
+  <button class="btn" onClick() { count++ }>+ Increment</button>
+</div>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background: #1e1e2e;
+    min-width: 180px;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 0;
+  }
+
+  .count {
+    font-size: 3rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #89dceb;
+    line-height: 1;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: transparent;
+    color: #cdd6f4;
+    cursor: pointer;
+    transition: border-color 0.1s, color 0.1s;
+  }
+
+  .btn:hover {
+    border-color: #89dceb;
+    color: #89dceb;
+  }
+</style>

@@ -6,4 +6,9 @@ import marko from "@andystewartdesign/astro-marko";
 // https://astro.build/config
 export default defineConfig({
   integrations: [marko(), mdx()],
+  markdown: {
+    shikiConfig: {
+      theme: 'catppuccin-mocha',
+    },
+  },
 });

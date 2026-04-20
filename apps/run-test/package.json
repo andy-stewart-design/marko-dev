@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "marko": "^6.0.0"
+    "@andystewartdesign/nanostores-marko": "*",
+    "marko": "^6.0.0",
+    "nanostores": "^1.0.0"
   },
   "devDependencies": {
     "@marko/run": "^0.9.6"

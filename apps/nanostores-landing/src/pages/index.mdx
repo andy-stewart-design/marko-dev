@@ -1,0 +1,127 @@
+---
+layout: ../layouts/Layout.astro
+---
+
+import CounterInc from "../tags/counter-inc/index.marko";
+import CounterDec from "../tags/counter-dec/index.marko";
+import SharedInput from "../tags/shared-input/index.marko";
+import SharedDisplay from "../tags/shared-display/index.marko";
+
+# @andystewartdesign/nanostores-marko
+
+<p class="tagline">
+  Shared reactive state for <a href="https://markojs.com">Marko 6</a>, powered
+  by <a href="https://github.com/nanostores/nanostores">Nanostores</a>. Full
+  type inference included.
+</p>
+
+<div class="install-block">
+  <span class="prompt">$</span>
+  <span>npm install @andystewartdesign/nanostores-marko nanostores</span>
+</div>
+
+## The problem
+
+Marko components are great at managing their own local state, but there's no built-in way to share state between independent components on the same page. If two components need to stay in sync, your options are prop drilling, custom events, or reaching for a global variable — none of which scale well.
+
+This package brings [Nanostores](https://github.com/nanostores/nanostores) atoms into Marko as first-class reactive state. Define a store once, bind it in as many components as you like, and they all stay in sync automatically — no events, no context, no coordination code needed.
+
+## Quick start
+
+**1. Define your stores** in a shared module:
+
+```ts
+// src/stores/counter.ts
+import { createStore } from "@andystewartdesign/nanostores-marko";
+
+export const $counter = createStore(0);
+export const $name = createStore("world");
+```
+
+**2. Use the `<store>` tag** in any Marko component:
+
+```marko
+import { $counter } from "../../stores/counter.ts";
+
+<store/count=$counter/>
+
+<div>
+  <p>Count: ${count}</p>
+  <button onClick() { count++ }>+</button>
+  <button onClick() { count-- }>−</button>
+</div>
+```
+
+The `<store>` tag subscribes to the atom and exposes its value as a local variable. Assigning to that variable — `count++`, `count = 0` — updates the store directly, so every other component subscribed to `$counter` reacts instantly.
+
+## Live demos
+
+### Counter
+
+Two independent components, one that increments and one that decrements, both bound to the same store. The count stays in sync across both.
+
+<div class="demo-box">
+  <div class="demo-label">Live demo</div>
+  <div class="demo-content demo-row">
+    <CounterInc client:load />
+    <CounterDec client:load />
+  </div>
+</div>
+
+### Shared state
+
+Two completely independent components bound to the same store. Edit the input and watch the display update in real time — no prop drilling, no events, no context.
+
+<div class="demo-box">
+  <div class="demo-label">Live demo</div>
+  <div class="demo-content demo-row">
+    <SharedInput client:load />
+    <SharedDisplay client:load />
+  </div>
+</div>
+
+## API
+
+### `createStore<T>(initialValue: T): TypedKey<T>`
+
+Creates a nanostores `atom` and registers it under an auto-generated string key. Returns the key, which you pass to the `<store>` tag. The generic type `T` is carried via a phantom type on the key string, enabling end-to-end type inference with no manual annotations.
+
+```ts
+const $count = createStore(0); // TypedKey<number>
+const $name = createStore("Alice"); // TypedKey<string>
+```
+
+### `<store/varName=key>`
+
+Subscribes to the store and exposes its value as a reactive local variable. Assigning to the variable calls `.set()` on the underlying atom.
+
+```marko
+<store/count=$counter/>
+// count is typed as number
+// count++ calls $counter atom's .set()
+```
+
+### `getStore<T>(key: TypedKey<T>): WritableAtom<T>`
+
+Returns the underlying nanostores `WritableAtom` for a given key. Useful when you need to read or write the store outside a Marko template, like in in event handlers or utility functions.
+
+```ts
+import { getStore } from "@andystewartdesign/nanostores-marko";
+import { $counter } from "./stores/counter.ts";
+
+getStore($counter).set(0); // reset
+getStore($counter).get(); // read current value
+getStore($counter).subscribe((v) => console.log(v)); // subscribe
+```
+
+## How it works
+
+Marko's SSR serialization can only carry plain values across the server/client boundary. Passing a nanostores atom as a tag input would fail at runtime because atoms contain functions.
+
+This package sidesteps the problem with a **string key registry**:
+
+1. `createStore` creates an atom, stores it in a `Map` keyed by an auto-generated string, and returns that string.
+2. The string is a plain value — fully serializable by Marko's SSR runtime.
+3. On the client, the `<store>` tag receives the same string key and looks up the atom from the same `Map` (which was initialized by the same module on both sides).
+
+The `Map` lives at the module level inside the package. Vite's dependency pre-bundler ensures both `createStore` and the `<store>` tag resolve to the exact same module instance, so they share a single registry.

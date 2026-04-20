@@ -3,14 +3,11 @@
     <img src="./logo.svg" alt="Marko" class="logo">
   </header>
   <main>
-    <p>
-      Edit
-      <code>./src/routes/+page.marko</code>
-       and save to reload.
-    </p>
-    <a href="https://markojs.com/docs/introduction/getting-started">
-      Learn Marko
-    </a>
+    <p class="label">Shared store — two independent components</p>
+    <div class="demo">
+      <counter-inc/>
+      <counter-dec/>
+    </div>
   </main>
 </div>
 <mouse-mask/>
@@ -29,5 +26,21 @@
   }
   img.logo {
     width: 12em;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 1rem;
+  }
+
+  .demo {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 </style>

@@ -1,0 +1,39 @@
+import { $message } from "../../stores/demo.ts";
+
+<store/message=$message/>
+
+<div class="shared-card">
+  <p class="card-label">Component B — reads from store</p>
+  <p class="value">${message}</p>
+</div>
+
+<style>
+  .shared-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    width: 100%;
+  }
+
+  .card-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .value {
+    font-size: 0.95rem;
+    color: #0d9488;
+    font-weight: 500;
+    margin: 0;
+    min-height: 1.4rem;
+    word-break: break-word;
+  }
+</style>
