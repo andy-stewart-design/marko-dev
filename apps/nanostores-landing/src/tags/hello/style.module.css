@@ -1,0 +1,13 @@
+.hello {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem;
+  border: 1px solid coral;
+  border-radius: 1rem;
+
+  p {
+    margin: 0;
+  }
+}
