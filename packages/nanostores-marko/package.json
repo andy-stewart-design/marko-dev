@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "npm run build && npm publish"
   },
   "peerDependencies": {
     "marko": "^6.0.0",
@@ -28,8 +29,5 @@
     "marko": "^6.0.0",
     "nanostores": "^1.0.0",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@andystewartdesign/nanostores-marko": "^0.1.4"
   }
 }

@@ -1,0 +1,35 @@
+{
+  "name": "@andystewartdesign/astro-marko",
+  "version": "0.1.2",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./server": "./dist/server.js",
+    "./client": "./dist/client.js"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "release": "npm run build && npm publish"
+  },
+  "peerDependencies": {
+    "@marko/vite": "^5.0.0",
+    "astro": "^5.0.0 || ^6.0.0",
+    "marko": "^6.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@marko/language-tools": "^2.5.58",
+    "@marko/vite": "5.4.8",
+    "@types/node": "^25.6.0",
+    "astro": "^5.0.0",
+    "marko": "^6.0.0",
+    "typescript": "^5.0.0"
+  }
+}
