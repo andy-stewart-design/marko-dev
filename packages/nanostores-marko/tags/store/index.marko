@@ -1,0 +1,25 @@
+import { _getStore } from "../../dist/store.js";
+import type { TypedKey } from "../../dist/store.js";
+
+export interface Input<T = unknown> {
+  value: TypedKey<T>;
+}
+
+export type Return = NonNullable<Input["value"]["__type"]>;
+
+<let/storeValue=_getStore(input.value).get() as T>
+
+<lifecycle<{ unsubscribe?: () => void }>
+  onMount() {
+    this.unsubscribe = _getStore(input.value).subscribe((v) => {
+      storeValue = v as T;
+    });
+  }
+  onDestroy() {
+    this.unsubscribe?.();
+  }
+/>
+
+<return=storeValue valueChange(newValue) {
+  _getStore(input.value).set(newValue);
+}>

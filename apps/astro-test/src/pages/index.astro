@@ -1,17 +1,25 @@
 ---
-
+import CounterA from "../tags/counter-a/index.marko";
+import CounterB from "../tags/counter-b/index.marko";
+import InputA from "../tags/input-a/index.marko";
+import InputB from "../tags/input-b/index.marko";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Nanostores + Marko</title>
+  </head>
+  <body>
+    <h1>Nanostores + Marko</h1>
+    <hr />
+    <h2>Shared Counter</h2>
+    <CounterA client:load />
+    <CounterB client:load />
+    <h2>Shared Value</h2>
+    <InputA client:load />
+    <InputB client:load />
+  </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "name": "@andystewartdesign/nanostores-marko",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/store.d.ts",
+      "import": "./dist/store.js"
+    },
+    "./marko.json": "./marko.json"
+  },
+  "files": ["dist", "tags", "marko.json"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "marko": "^6.0.0",
+    "nanostores": "^1.0.0"
+  },
+  "devDependencies": {
+    "marko": "^6.0.0",
+    "nanostores": "^1.0.0",
+    "typescript": "^5.0.0"
+  }
+}
