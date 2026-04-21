@@ -1,0 +1,136 @@
+---
+layout: ../layouts/Layout.astro
+---
+
+import Counter from "../tags/counter/index.marko";
+import SlotDemoWrapper from "../components/SlotDemoWrapper.astro";
+
+# @andystewartdesign/astro-marko
+
+<p class="tagline">
+  Use <a href="https://markojs.com">Marko 6</a> components in{" "}
+  <a href="https://astro.build">Astro</a> — server-rendered by default, hydrated
+  as islands when you need interactivity.
+</p>
+
+<div class="install-block">
+  <span class="prompt">$</span>
+  <span>npm install @andystewartdesign/astro-marko @marko/vite@^5 marko</span>
+</div>
+
+## Why Marko + Astro?
+
+[Marko 6](https://markojs.com) is a compiler-first framework for building dynamic and reactive user interfaces. Components are reactive by default — no `useState`, no signals to wire up manually, no virtual DOM overhead. Marko determines at compile time which changes need to happen to the page whenever state is updated, so granular updates are ensured to improve client-side performance.
+
+[Astro](https://astro.build) is a web framework built around content. MDX is a first-class citizen — mix markdown and components in the same file, as you're seeing on this page. [Content Collections](https://docs.astro.build/en/guides/content-collections/) give you automatic TypeScript type-safety for all your content, whether it's markdown, MDX, or structured data. Beyond that, Astro's ecosystem covers the things content sites need: built-in image optimization, a growing library of deployment adapters, and integrations for everything from sitemaps to RSS feeds.
+
+Marko slots naturally into this picture. Use Astro for your content layer and page structure, and reach for Marko when you need fine-grained interactivity.
+
+## Setup
+
+Add the integration to your `astro.config.mjs`:
+
+```js
+import { defineConfig } from "astro/config";
+import marko from "@andystewartdesign/astro-marko";
+
+export default defineConfig({
+  integrations: [marko()],
+});
+```
+
+## Demo: server-rendered component with slots
+
+Marko components can be rendered entirely on the server. Slot content passed from Astro is available in the template as HTML strings — the default slot maps to `input.content`, and named slots keep their name. Use Marko's `$!{}` syntax to render the HTML unescaped.
+
+**`Card.marko`**
+
+```marko
+export interface Input {
+  title?: string;
+  content?: string;
+  footer?: string;
+}
+
+<div class="card">
+  <h3>${input.title}</h3>
+  <if=input.content>
+    <div class="card-body">$!{input.content}</div>
+  </if>
+  <if=input.footer>
+    <footer class="card-footer">$!{input.footer}</footer>
+  </if>
+</div>
+```
+
+**`Page.astro`**
+
+```astro
+---
+import Card from "./Card.marko";
+---
+
+<Card title="Card.marko">
+  <p>This is the <strong>default slot</strong> — passed as input.content.</p>
+  <p slot="footer">This is a <em>named slot</em> — passed as input.footer.</p>
+</Card>
+```
+
+<div class="demo-box">
+  <div class="demo-label">Live demo</div>
+  <div class="demo-content">
+    <SlotDemoWrapper />
+  </div>
+</div>
+
+## Demo: interactive island
+
+Add a `client:*` directive to hydrate a Marko component as an island. Marko's reactive local state works out of the box — no stores or signals needed for component-local interactivity.
+
+**`Counter.marko`**
+
+```marko
+<let/count=0/>
+
+<div class="counter">
+  <span>${count}</span>
+  <button on-click() { count-- }>−</button>
+  <button on-click() { count = 0 }>Reset</button>
+  <button on-click() { count++ }>+</button>
+</div>
+```
+
+**`Page.astro`**
+
+```astro
+---
+import Counter from "./Counter.marko";
+---
+
+<Counter client:load />
+```
+
+All of Astro's [client directives](https://docs.astro.build/en/reference/directives-reference/#client-directives) are supported: `client:load`, `client:idle`, `client:visible`, `client:media`, and `client:only`.
+
+<div class="demo-box">
+  <div class="demo-label">Live demo</div>
+  <div class="demo-content">
+    <Counter client:load />
+  </div>
+</div>
+
+## Notes & open questions
+
+This integration is an early alpha. A few things to be aware of:
+
+### `@marko/vite` version pin
+
+You must use `@marko/vite@^5` with Astro 6. `@marko/vite@6.x` declares `vite@^8` as a peer dependency, which conflicts with Astro 6's bundled Vite 7 — npm will refuse the install. The pin will be lifted when Astro upgrades to Vite 8.
+
+### Island hydration
+
+`client:*` islands use Marko's `mount()` API, which builds a fresh reactive DOM on the client rather than reconciling against the server-rendered markup. In practice this means the server-rendered content is completely replaced on hydration. True SSR reconciliation is a pending question for the Marko team.
+
+### TypeScript
+
+Importing `.marko` files in `.astro` or `.ts` files is typed automatically — the integration injects an ambient `*.marko` module declaration into your project via Astro's type generation. Full per-component `Input` type inference (typed props) is not yet supported and is an open question for the Marko team's language tooling.

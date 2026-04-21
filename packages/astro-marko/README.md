@@ -57,7 +57,7 @@ All of Astro's [client directives](https://docs.astro.build/en/reference/directi
 
 ### Slots
 
-Slot content passed from Astro is available in the Marko template as HTML strings. The default slot maps to `input.content`; named slots keep their name.
+Slot content passed from Astro is available in the Marko template as HTML strings. The default slot maps to `input.content`; named slots keep their name. **Note:** you must use Marko‘s `$!{}` syntax to render raw, unescaped HTML.
 
 ```astro
 <Card client:load>
@@ -69,8 +69,8 @@ Slot content passed from Astro is available in the Marko template as HTML string
 ```marko
 // Card.marko
 <div class="card">
-  <div class="header" innerHTML=input.header/>
-  <div class="body" innerHTML=input.content/>
+  <div class="header">$!{input.header}</div>
+  <div class="body">$!{input.content}</div>
 </div>
 ```
 

@@ -1,0 +1,17 @@
+import s from "./style.module.css";
+
+export interface Input {
+  title?: string;
+  content?: string;
+  footer?: string;
+}
+
+<div class=s.slotDemo>
+  <h3 class=s.slotTitle>${input.title}</h3>
+  <if=input.content>
+    <div class=s.slotBody>$!{input.content}</div>
+  </if>
+  <if=input.footer>
+    <footer class=s.slotFooter>$!{input.footer}</footer>
+  </if>
+</div>

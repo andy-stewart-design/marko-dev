@@ -1,58 +1,10 @@
+import s from "./style.module.css";
 import { $counter } from "../../stores/demo.ts";
 
 <store/count=$counter/>
 
-<div class="counter-card">
-  <p class="card-label">Component A — increments</p>
-  <span class="count">${count}</span>
-  <button class="btn" onClick() { count++ }>+ Increment</button>
+<div class=s.counterCard>
+  <p class=s.cardLabel>Component A — increments</p>
+  <span class=s.count>${count}</span>
+  <button class=s.btn onClick() { count++ }>+ Increment</button>
 </div>
-
-<style>
-  .counter-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.875rem;
-    padding: 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #f8fafc;
-    width: 100%;
-  }
-
-  .card-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #64748b;
-    margin: 0;
-  }
-
-  .count {
-    font-size: 3rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: #0d9488;
-    line-height: 1;
-  }
-
-  .btn {
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.5rem 1.25rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background: #fff;
-    color: #1e293b;
-    cursor: pointer;
-    transition: background 0.1s, border-color 0.1s;
-  }
-
-  .btn:hover {
-    background: #f0fdfa;
-    border-color: #0d9488;
-    color: #0d9488;
-  }
-</style>
