@@ -202,6 +202,18 @@ export default function marko(): AstroIntegration {
           },
         });
       },
+
+      'astro:config:done': ({ injectTypes }) => {
+        injectTypes({
+          filename: 'types/astro-marko.d.ts',
+          content: `declare module "*.marko" {
+  import type { Template } from "marko";
+  const template: Template;
+  export default template;
+}
+`,
+        });
+      },
     },
   };
 }
