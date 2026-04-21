@@ -7,8 +7,10 @@
 ## Installation
 
 ```bash
-npm install @andystewartdesign/astro-marko @marko/vite marko
+npm install @andystewartdesign/astro-marko @marko/vite@^5 marko
 ```
+
+> **Note:** `@marko/vite@6.x` requires Vite 8, which conflicts with Astro 6's bundled Vite 7. Pin to `@marko/vite@^5` until Astro upgrades to Vite 8.
 
 ## Setup
 
@@ -71,6 +73,12 @@ Slot content passed from Astro is available in the Marko template as HTML string
   <div class="body" innerHTML=input.content/>
 </div>
 ```
+
+## TypeScript
+
+`.marko` imports are automatically typed as `Template` from the `marko` package. The integration injects an ambient `*.marko` module declaration into your project via Astro's type generation — no manual `tsconfig` changes needed.
+
+> Full per-component `Input` type inference (typed props) is not yet supported.
 
 ## How it works
 
