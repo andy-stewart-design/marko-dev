@@ -20,11 +20,11 @@ import SlotDemoWrapper from "../components/SlotDemoWrapper.astro";
 
 ## Why Marko + Astro?
 
-[Marko 6](https://markojs.com) is a compiler-first framework for building dynamic and reactive user interfaces. Components are reactive by default — no `useState`, no signals to wire up manually, no virtual DOM overhead. Marko determines at compile time which changes need to happen to the page whenever state is updated, so granular updates are ensured to improve client-side performance.
+[Marko 6](https://markojs.com) is a lightweight, compiler-first framework for building dynamic, reactive user interfaces. It analyzes your code at compile time to determine precisely when and how state updates should run, enabling highly efficient, fine-grained DOM updates with minimal client-side overhead.
 
-[Astro](https://astro.build) is a web framework built around content. MDX is a first-class citizen — mix markdown and components in the same file, as you're seeing on this page. [Content Collections](https://docs.astro.build/en/guides/content-collections/) give you automatic TypeScript type-safety for all your content, whether it's markdown, MDX, or structured data. Beyond that, Astro's ecosystem covers the things content sites need: built-in image optimization, a growing library of deployment adapters, and integrations for everything from sitemaps to RSS feeds.
+[Astro](https://astro.build) takes a content-first approach. MDX is a first-class citizen, so you can seamlessly blend Markdown and components in a single file—just like this page. With [Content Collections](https://docs.astro.build/en/guides/content-collections/), you get automatic TypeScript type safety across all your content, whether it’s Markdown, MDX, or structured data. Astro also provides the essentials for content-driven sites out of the box: optimized images, flexible deployment adapters, and integrations for features like sitemaps and RSS feeds.
 
-Marko slots naturally into this picture. Use Astro for your content layer and page structure, and reach for Marko when you need fine-grained interactivity.
+Marko fits naturally alongside Astro. Use Astro to structure your content and pages, and bring in Marko when you need precise, high-performance interactivity.
 
 ## Setup
 
@@ -129,8 +129,8 @@ You must use `@marko/vite@^5` with Astro 6. `@marko/vite@6.x` declares `vite@^8`
 
 ### Island hydration
 
-`client:*` islands use Marko's `mount()` API, which builds a fresh reactive DOM on the client rather than reconciling against the server-rendered markup. In practice this means the server-rendered content is completely replaced on hydration. True SSR reconciliation is a pending question for the Marko team.
+`client:*` islands use Marko's `mount()` API, which builds a fresh reactive DOM on the client rather than reconciling against the server-rendered markup. In practice this means the server-rendered content is completely replaced on hydration. The feasibility of true SSR reconciliation is still being explored.
 
 ### TypeScript
 
-Importing `.marko` files in `.astro` or `.ts` files is typed automatically — the integration injects an ambient `*.marko` module declaration into your project via Astro's type generation. Full per-component `Input` type inference (typed props) is not yet supported and is an open question for the Marko team's language tooling.
+Importing `.marko` files in `.astro` or `.ts` files is **loosely** typed automatically — the integration injects an ambient `*.marko` module declaration into your project via Astro's automated type generation. Full per-component `Input` type inference (typed props) is not yet supported and is still being explored.
