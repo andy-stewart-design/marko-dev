@@ -1,6 +1,10 @@
 import s from "./style.module.css";
 
-<let/count=0>
+export interface Input {
+    defaultCount: number;
+}
+
+<let/count=input.defaultCount>
 
 <div class=s.hello>
     <p>Hello!</p>
