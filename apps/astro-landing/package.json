@@ -14,6 +14,8 @@
   "dependencies": {
     "@andystewartdesign/astro-marko": "^0.1.5",
     "@astrojs/mdx": "^5.0.3",
+    "@ebay/skin": "^19.24.2",
+    "@evo-web/marko": "^0.1.12",
     "@marko/vite": "^5.4.9",
     "astro": "^6.1.8",
     "marko": "^6.0.164"

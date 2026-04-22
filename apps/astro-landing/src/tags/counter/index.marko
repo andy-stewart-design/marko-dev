@@ -1,12 +1,44 @@
 import s from "./style.module.css";
+import "@ebay/skin/marketsans.css";
+import "@ebay/skin/tokens.css";
+import "@ebay/skin/global.css";
+import "@ebay/skin/utility.css";
+import "@ebay/skin/page-grid.css";
+import "@ebay/skin/typography.css";
 
-<let/count=0/>
+<let/count=0>
 
 <div class=s.counter>
   <span class=s.count>${count}</span>
   <div class=s.controls>
-    <button class=s.btn on-click() { count-- }>−</button>
-    <button class=`${s.btn} ${s.btnReset}` on-click() { count = 0 }>Reset</button>
-    <button class=s.btn on-click() { count++ }>+</button>
+    <button
+      class=s.btn
+      on-click() {
+        count--;
+      }
+    >
+      −
+    </button>
+    <button
+      class=`${s.btn} ${s.btnReset}`
+      on-click() {
+        count = 0;
+      }
+    >
+      Reset
+    </button>
+    <button
+      class=s.btn
+      on-click() {
+        count++;
+      }
+    >
+      +
+    </button>
   </div>
+  <evo-button onClick() {
+    console.log("HELLO!");
+  }>
+    Click me
+  </evo-button>
 </div>
