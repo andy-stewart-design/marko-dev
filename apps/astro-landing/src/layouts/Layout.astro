@@ -217,9 +217,6 @@ const { title = "astro-marko", description = "Marko 6 islands for Astro." } =
   }
 
   .install-block {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
     font-family: var(--mono);
     font-size: 0.9rem;
     background: var(--code-bg);
@@ -227,7 +224,12 @@ const { title = "astro-marko", description = "Marko 6 islands for Astro." } =
     padding: 0.875rem 1.25rem;
     border-radius: 8px;
     margin-bottom: 1rem;
-    width: fit-content;
+
+    div {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
   }
 
   .install-block .prompt {
