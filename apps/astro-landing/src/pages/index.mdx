@@ -125,6 +125,53 @@ All of Astro's [client directives](https://docs.astro.build/en/reference/directi
   </div>
 </div>
 
+## Typed props (beta)
+
+Per-component `Input` type inference is available as an opt-in beta feature. When enabled, importing a `.marko` file resolves to its specific `Input` interface rather than a generic fallback — giving you autocomplete and type errors for missing required props.
+
+Install the latest beta:
+
+<div class="install-block">
+  <div>
+    <span class="prompt">$</span>
+    <span>npm install @andystewartdesign/astro-marko@0.1.6-beta.1</span>
+  </div>
+</div>
+
+Enable it in your config:
+
+```js
+import { defineConfig } from "astro/config";
+import marko from "@andystewartdesign/astro-marko";
+
+export default defineConfig({
+  integrations: [marko({ dts: true })],
+});
+```
+
+On first run, the integration will:
+
+1. Check if `allowArbitraryExtensions: true` exists in your `tsconfig.json` and, if not, add it. If that addition is made, you will see a logged message prompting you to restart your editor's TypeScript server. You can avoid this step by manually adding it to your `tsconfig.json` before running your server for the first time.
+2. Add `**/*.marko.d.ts` to your `.gitignore`
+3. Generate a `.marko.d.ts` sidecar file next to each `.marko` component in your project
+
+The sidecar files are what make typed imports work. TypeScript 5.0+ checks for `foo.marko.d.ts` before falling back to the wildcard `*.marko` declaration, so each component gets its own type. For components that export an `Input` interface, the sidecar surfaces it:
+
+```ts
+// counter.marko.d.ts (generated — do not edit)
+/// <reference types="marko" />
+export interface Input {
+  initialCount: number;
+}
+declare const template: Marko.Template<Input> &
+  ((input: Input) => Marko.RenderedTemplate);
+export default template;
+```
+
+Sidecars are regenerated on every dev server start, and updated in real time via Vite's HMR when you edit a `.marko` file. They should not be committed to version control — the integration handles the `.gitignore` entry automatically.
+
+> **Note:** After the first run you must restart your editor's TypeScript server once (VS Code: `Cmd+Shift+P` → "TypeScript: Restart TS Server"). To skip this step, add `"allowArbitraryExtensions": true` to your `tsconfig.json` under `compilerOptions` before starting the dev server — the integration will detect it's already set and no restart will be needed.
+
 ## Notes & open questions
 
 This integration is an early alpha. A few things to be aware of:
@@ -139,4 +186,4 @@ You must use `@marko/vite@^5` with Astro 6. `@marko/vite@6.x` declares `vite@^8`
 
 ### TypeScript
 
-Importing `.marko` files in `.astro` or `.ts` files is **loosely** typed automatically — the integration injects an ambient `*.marko` module declaration into your project via Astro's automated type generation. Full per-component `Input` type inference (typed props) is not yet supported and is still being explored.
+Importing `.marko` files in `.astro` or `.ts` files is typed automatically via an ambient `*.marko` module declaration injected into your project. For full per-component `Input` type inference, see the [Typed props](#typed-props-beta) section above.

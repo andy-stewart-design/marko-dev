@@ -1,4 +1,5 @@
 ---
+import Hello from "../tags/hello/index.marko";
 import CounterA from "../tags/counter-a/index.marko";
 import CounterB from "../tags/counter-b/index.marko";
 import InputA from "../tags/input-a/index.marko";
@@ -14,6 +15,8 @@ import InputB from "../tags/input-b/index.marko";
   </head>
   <body>
     <h1>Nanostores + Marko</h1>
+    <hr />
+    <Hello defaultCount={5} client:load />
     <hr />
     <h2>Shared Counter</h2>
     <CounterA client:load />

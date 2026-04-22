@@ -1,12 +1,37 @@
 import s from "./style.module.css";
 
-<let/count=0/>
+export interface Input {
+  count: number;
+}
+
+<let/count=0>
 
 <div class=s.counter>
   <span class=s.count>${count}</span>
   <div class=s.controls>
-    <button class=s.btn on-click() { count-- }>−</button>
-    <button class=`${s.btn} ${s.btnReset}` on-click() { count = 0 }>Reset</button>
-    <button class=s.btn on-click() { count++ }>+</button>
+    <button
+      class=s.btn
+      on-click() {
+        count--;
+      }
+    >
+      −
+    </button>
+    <button
+      class=`${s.btn} ${s.btnReset}`
+      on-click() {
+        count = 0;
+      }
+    >
+      Reset
+    </button>
+    <button
+      class=s.btn
+      on-click() {
+        count++;
+      }
+    >
+      +
+    </button>
   </div>
 </div>
