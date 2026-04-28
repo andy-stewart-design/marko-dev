@@ -4,7 +4,7 @@
 
 `npx astro add` is not limited to official Astro integrations. Any npm package can be installed via it, as long as the package's `package.json` includes `"astro-integration"` (or `"astro-adapter"`) in its `keywords` array. That is the only gate.
 
-To support `npx astro add @andystewartdesign/astro-marko`, add to `package.json`:
+To support `npx astro add astro-marko`, add to `package.json`:
 
 ```json
 {
@@ -41,15 +41,29 @@ The extra setup steps — creating config files, scaffolding directories, modify
 
 There is no API for third-party integrations to hook into this behavior. The only way to get custom setup steps into `astro add` is to have them hardcoded in the Astro CLI source — which requires a PR to the Astro repo.
 
+## How `astro add` generates the config identifier
+
+When `astro add` writes the import and integration call to `astro.config.mjs`, it derives the variable name from the **package name** — not the exported function's `.name` property. Specifically, it strips `astro` as a prefix or suffix:
+
+- `astro-marko` → strip `astro-` prefix → `marko` ✅
+- `marko-astro` → strip `-astro` suffix → `marko` ✅
+- `markastro` → strip `astro` suffix → `mark` ❌
+
+This is why the package is named `astro-marko` rather than `markastro` — the latter produced `mark` as the identifier, which is confusing. The `astro-*` naming convention is also the standard for Astro integrations.
+
 ## Implications for `astro-marko`
 
-`npx astro add @andystewartdesign/astro-marko` would get users most of the way there:
+`npx astro add astro-marko` gets users all the way there:
 
 - Package installed ✓
 - Peer deps (`@marko/vite`, `marko`) installed ✓
 - `marko()` added to `astro.config.mjs` ✓
 - Custom setup (tsconfig, gitignore) ✗ — not possible via `astro add`
 
-This is fine because `astro-marko` already handles its own setup at runtime — `ensureAllowArbitraryExtensions` and `ensureGitignore` run on the first dev server start. So `astro add` handles discovery and installation, and the integration handles the rest.
+The custom setup gap is fine because `astro-marko` already handles its own setup at runtime — `ensureAllowArbitraryExtensions` and `ensureGitignore` run on the first dev server start. So `astro add` handles discovery and installation, and the integration handles the rest.
 
-The one gap: users would need to manually add `{ dts: true }` to the `marko()` call in their config, since `astro add` has no way to know about integration-specific options.
+The one remaining gap: users who want typed props need to manually add `{ dts: true }` to the `marko()` call in their config, since `astro add` has no way to know about integration-specific options.
+
+## Naming history
+
+The package was originally scoped as `@andystewartdesign/astro-marko`. As part of implementing `astro add` support it was renamed and republished as the unscoped `astro-marko`. The scoped package was tombstoned at `0.2.0` with a deprecation notice pointing to `astro-marko`. An intermediate name `markastro` was also published and deprecated after the identifier generation issue was discovered.

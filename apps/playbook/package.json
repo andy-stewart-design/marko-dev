@@ -1,5 +1,5 @@
 {
-  "name": "astro-landing",
+  "name": "playbook",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,10 +12,9 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@marko/vite": "^5.4.10",
+    "astro": "^6.1.10",
     "astro-marko": "^0.1.0",
-    "@astrojs/mdx": "^5.0.3",
-    "@marko/vite": "^5.4.9",
-    "astro": "^6.1.8",
-    "marko": "^6.0.164"
+    "marko": "^6.0.168"
   }
 }
