@@ -5,7 +5,7 @@ layout: ../layouts/Layout.astro
 import Counter from "../tags/counter/index.marko";
 import SlotDemoWrapper from "../components/SlotDemoWrapper.astro";
 
-# @andystewartdesign/astro-marko
+# astro-marko
 
 <p class="tagline">
   Use <a href="https://markojs.com">Marko 6</a> components in{" "}
@@ -20,7 +20,7 @@ import SlotDemoWrapper from "../components/SlotDemoWrapper.astro";
   </div>
   <div>
     <span class="prompt">$</span>
-    <span>npm install @andystewartdesign/astro-marko @marko/vite@^5 marko</span>
+    <span>npx astro add astro-marko</span>
   </div>
 </div>
 
@@ -28,22 +28,28 @@ import SlotDemoWrapper from "../components/SlotDemoWrapper.astro";
 
 [Marko 6](https://markojs.com) is a lightweight, compiler-first framework for building dynamic, reactive user interfaces. It analyzes your code at compile time to determine precisely when and how state updates should run, enabling highly efficient, fine-grained DOM updates with minimal client-side overhead.
 
-[Astro](https://astro.build) takes a content-first approach. MDX is a first-class citizen, so you can seamlessly blend Markdown and components in a single file—just like this page. With [Content Collections](https://docs.astro.build/en/guides/content-collections/), you get automatic TypeScript type safety across all your content, whether it’s Markdown, MDX, or structured data. Astro also provides the essentials for content-driven sites out of the box: optimized images, flexible deployment adapters, and integrations for features like sitemaps and RSS feeds.
+[Astro](https://astro.build) takes a content-first approach. MDX is a first-class citizen, so you can seamlessly blend Markdown and components in a single file—just like this page. With [Content Collections](https://docs.astro.build/en/guides/content-collections/), you get automatic TypeScript type safety across all your content, whether it's Markdown, MDX, or structured data. Astro also provides the essentials for content-driven sites out of the box: optimized images, flexible deployment adapters, and integrations for features like sitemaps and RSS feeds.
 
 Marko fits naturally alongside Astro. Use Astro to structure your content and pages, and bring in Marko when you need precise, high-performance interactivity.
 
 ## Setup
 
-Add the integration to your `astro.config.mjs`:
+```bash
+npx astro add astro-marko
+```
+
+This installs `astro-marko` and its peer dependencies (`@marko/vite`, `marko`) and adds the integration to your `astro.config.mjs` automatically:
 
 ```js
 import { defineConfig } from "astro/config";
-import marko from "@andystewartdesign/astro-marko";
+import marko from "astro-marko";
 
 export default defineConfig({
   integrations: [marko()],
 });
 ```
+
+> **Note:** `@marko/vite@6.x` requires Vite 8, which conflicts with Astro 6's bundled Vite 7. `astro add` will pin to `@marko/vite@^5` automatically until Astro upgrades to Vite 8.
 
 ## Demo: server-rendered component with slots
 
@@ -125,24 +131,15 @@ All of Astro's [client directives](https://docs.astro.build/en/reference/directi
   </div>
 </div>
 
-## Typed props (beta)
+## Typed props
 
-Per-component `Input` type inference is available as an opt-in beta feature. When enabled, importing a `.marko` file resolves to its specific `Input` interface rather than a generic fallback — giving you autocomplete and type errors for missing required props.
-
-Install the latest beta:
-
-<div class="install-block">
-  <div>
-    <span class="prompt">$</span>
-    <span>npm install @andystewartdesign/astro-marko@0.1.6-beta.1</span>
-  </div>
-</div>
+Per-component `Input` type inference is available as an opt-in feature. When enabled, importing a `.marko` file resolves to its specific `Input` interface rather than a generic fallback — giving you autocomplete and type errors for missing required props.
 
 Enable it in your config:
 
 ```js
 import { defineConfig } from "astro/config";
-import marko from "@andystewartdesign/astro-marko";
+import marko from "astro-marko";
 
 export default defineConfig({
   integrations: [marko({ dts: true })],
@@ -186,4 +183,4 @@ You must use `@marko/vite@^5` with Astro 6. `@marko/vite@6.x` declares `vite@^8`
 
 ### TypeScript
 
-Importing `.marko` files in `.astro` or `.ts` files is typed automatically via an ambient `*.marko` module declaration injected into your project. For full per-component `Input` type inference, see the [Typed props](#typed-props-beta) section above.
+Importing `.marko` files in `.astro` or `.ts` files is typed automatically via an ambient `*.marko` module declaration injected into your project. For full per-component `Input` type inference, see the [Typed props](#typed-props) section above.
