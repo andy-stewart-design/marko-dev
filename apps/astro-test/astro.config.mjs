@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import marko from "@andystewartdesign/astro-marko";
+import marko from "astro-marko";
 
 // https://astro.build/config
 export default defineConfig({

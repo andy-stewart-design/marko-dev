@@ -347,8 +347,8 @@ export default function marko(options: MarkoOptions = {}): AstroIntegration {
 
         addRenderer({
           name: 'astro-marko',
-          serverEntrypoint: '@andystewartdesign/astro-marko/server',
-          clientEntrypoint: '@andystewartdesign/astro-marko/client',
+          serverEntrypoint: 'astro-marko/server',
+          clientEntrypoint: 'astro-marko/client',
         });
 
         updateConfig({

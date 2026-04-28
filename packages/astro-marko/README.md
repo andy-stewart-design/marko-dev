@@ -1,4 +1,4 @@
-# @andystewartdesign/astro-marko
+# astro-marko
 
 [Astro](https://astro.build) integration for [Marko 6](https://markojs.com) islands.
 
@@ -7,7 +7,13 @@
 ## Installation
 
 ```bash
-npm install @andystewartdesign/astro-marko @marko/vite@^5 marko
+npx astro add astro-marko
+```
+
+Or manually:
+
+```bash
+npm install astro-marko @marko/vite@^5 marko
 ```
 
 > **Note:** `@marko/vite@6.x` requires Vite 8, which conflicts with Astro 6's bundled Vite 7. Pin to `@marko/vite@^5` until Astro upgrades to Vite 8.
@@ -18,7 +24,7 @@ Add the integration to your `astro.config.mjs`:
 
 ```js
 import { defineConfig } from "astro/config";
-import marko from "@andystewartdesign/astro-marko";
+import marko from "astro-marko";
 
 export default defineConfig({
   integrations: [marko()],
@@ -57,7 +63,7 @@ All of Astro's [client directives](https://docs.astro.build/en/reference/directi
 
 ### Slots
 
-Slot content passed from Astro is available in the Marko template as HTML strings. The default slot maps to `input.content`; named slots keep their name. **Note:** you must use Marko‘s `$!{}` syntax to render raw, unescaped HTML.
+Slot content passed from Astro is available in the Marko template as HTML strings. The default slot maps to `input.content`; named slots keep their name. **Note:** you must use Marko's `$!{}` syntax to render raw, unescaped HTML.
 
 ```astro
 <Card client:load>
@@ -89,3 +95,7 @@ Slot content passed from Astro is available in the Marko template as HTML string
 **Island entry resolution** — Astro wraps each island component in a virtual entry module. `@marko/vite` detects imports of `.marko` files from Rollup entry modules and adds a `?marko-browser-entry` query that switches to Marko's SPA hydration format. This breaks sub-tags imported from npm packages (they don't export `$template`). This integration intercepts those imports and returns resolved absolute paths so `@marko/vite` never adds the query.
 
 **Environment API compatibility** — Astro 6 uses Vite's Environment API, where the prerender environment no longer sets `opts.ssr`. This integration shims the SSR flag based on `this.environment.name` so `@marko/vite` compiles templates in the correct mode.
+
+---
+
+> Migrating from `@andystewartdesign/astro-marko` or `markastro`? Just swap the package name — the API is identical.

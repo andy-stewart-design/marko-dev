@@ -12,7 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@andystewartdesign/astro-marko": "^0.1.3",
+    "astro-marko": "^0.1.0",
     "@andystewartdesign/nanostores-marko": "^0.1.4",
     "@astrojs/mdx": "^5.0.3",
     "@marko/vite": "^5.4.9",
